@@ -1,0 +1,21 @@
+#add label{
+    color:white;
+}
+
+#update label{
+    font-weight:bold;
+}
+
+#slogan{
+    color:cadetblue;
+    font-weight:bold;
+    font-size:20px;
+}
+
+#authors{
+    color:cadetblue;
+    font-weight:bold;
+    font-size:16px;
+    padding-left:20px;
+}
+
