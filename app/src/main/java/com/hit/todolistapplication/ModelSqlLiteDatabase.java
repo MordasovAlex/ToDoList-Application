@@ -16,8 +16,8 @@ import org.json.JSONObject;
  * The task name and the deadline date to this task.
  * All user tasks will be shown in a list that they can add/update/delete each time they log into the app.
  * All the data will be stores in app using SQLite.
- *
- * @author Alex Mordasov, Elital Sharabi, Nir Ostri
+ * Implement the MVVM architecture
+ * @author Alex Mordasov
  * @version 1.0
  * @since 2020-03-19
  */
@@ -28,12 +28,13 @@ public class ModelSqlLiteDatabase extends SQLiteOpenHelper implements Imodel {
     private Context context;
     private static final String DATABASE_NAME = "Todo.db";
     private static final String TABLE_ITEMS = "to_do_items";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String CREATE_TABLE_TODO = "CREATE TABLE " + TABLE_ITEMS +
             "(" + Columns.I_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             Columns.I_COL_2 + " TEXT," +
             Columns.I_COL_3 + " TEXT," +
-            Columns.I_COL_4 + " INTEGER)";
+            Columns.I_COL_4 + " INTEGER," +
+            Columns.I_COL_5 + " TEXT)";
 
 
     abstract class Columns {
@@ -42,6 +43,7 @@ public class ModelSqlLiteDatabase extends SQLiteOpenHelper implements Imodel {
         private static final String I_COL_2 = "date";
         private static final String I_COL_3 = "name";
         private static final String I_COL_4 = "userid";
+        private static final String I_COL_5 = "time";
     }
 
     /***
@@ -78,10 +80,10 @@ public class ModelSqlLiteDatabase extends SQLiteOpenHelper implements Imodel {
     }
 
     @Override
-    public void deleteFromToDoList(String date, String name) {
+    public void deleteFromToDoList(String date,String time, String name) {
         //task to be removed from the database
-        String whereClause = "date=? AND name =?";
-        String[] whereArgs = new String[]{date, name};
+        String whereClause = "date=? AND time =? AND name =?";
+        String[] whereArgs = new String[]{date,time, name};
         //delete the task and show toast
         if (db.delete(TABLE_ITEMS, whereClause, whereArgs) == 0) {
             Toast.makeText(context, "Error: activity does not appear in the database", Toast.LENGTH_LONG).show();
@@ -91,14 +93,15 @@ public class ModelSqlLiteDatabase extends SQLiteOpenHelper implements Imodel {
     }
 
     @Override
-    public void updateToDoList(String date, String name, String updateDate, String updateName) {
+    public void updateToDoList(String date,String time,String name, String updateDate,String updateTime, String updateName) {
         ContentValues values = new ContentValues();
-        String[] whereArgs = new String[]{date, name};
-        String whereClause = "date=? AND name =?";
+        String whereClause = "date=? AND time =? AND name =?";
+        String[] whereArgs = new String[]{date,time, name};
 
         //fill in the values
         values.put(Columns.I_COL_2, updateDate);
         values.put(Columns.I_COL_3, updateName);
+        values.put(Columns.I_COL_5, updateTime);
         if (db.update(TABLE_ITEMS, values, whereClause, whereArgs) == 0) {
             Toast.makeText(context, "Error: activity does not appear in the db", Toast.LENGTH_LONG).show();
         } else {
@@ -107,7 +110,7 @@ public class ModelSqlLiteDatabase extends SQLiteOpenHelper implements Imodel {
     }
 
     @Override
-    public void addItem(int userId, String date, String name) {
+    public void addItem(int userId, String date,String time, String name) {
 
         //initialize ContentValues object
         ContentValues values = new ContentValues();
@@ -115,6 +118,7 @@ public class ModelSqlLiteDatabase extends SQLiteOpenHelper implements Imodel {
         values.put(Columns.I_COL_2, date);
         values.put(Columns.I_COL_3, name);
         values.put(Columns.I_COL_4, userId);
+        values.put(Columns.I_COL_5, time);
 
         //make the insertion to the database
         if (db.insert(TABLE_ITEMS, null, values) != -1) {
@@ -141,6 +145,7 @@ public class ModelSqlLiteDatabase extends SQLiteOpenHelper implements Imodel {
                 item.put("id", cursor.getString(cursor.getColumnIndex("userid")));
                 item.put("item", cursor.getString(cursor.getColumnIndex("name")));
                 item.put("date", cursor.getString(cursor.getColumnIndex("date")));
+                item.put("time", cursor.getString(cursor.getColumnIndex("time")));
                 arr.put(item);
             }
         }

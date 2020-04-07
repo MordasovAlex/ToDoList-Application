@@ -36,9 +36,11 @@
     </div>
     <div>
         <label>Task:</label>
-        <input type="text" name="new_item" id="new_item"/>
+        <input type="text" name="new_item" id="new_item" data-clear-btn="true"/>
         <label>Deadline Date:</label>
-        <input type="date" name="new_date" id="new_date"/>
+        <input type="date" name="new_date" id="new_date" data-clear-btn="true">
+        <label for="new_time">Deadline Time:</label>
+        <input type="time" data-clear-btn="true" name="new_time" id="new_time">
         <a onclick="add()" href="#main_page" data-role="button" data-icon="plus" data-theme="b">Add Task</a>
     </div>
 </div>
@@ -55,6 +57,8 @@
         <input type="text" name="update_item" id="newNameValue"/>
         <label>Deadline Date:</label>
         <input type="date" name="update_date" id="newDateValue"/>
+        <label>Deadline Time:</label>
+        <input type="time" name="update_time" id="newTimeValue"/>
         <a id="updateButton" href="#itemlist" data-role="button" data-icon="refresh" data-theme="b">Update This Task</a>
     </div>
 </div>

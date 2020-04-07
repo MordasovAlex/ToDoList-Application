@@ -54,24 +54,24 @@ class ViewModel extends Activity implements IViewModel {
 
     @Override
     @JavascriptInterface
-    public void addItem(String date, String name) {
+    public void addItem(String date,String time, String name) {
       //  add the task to database
-        model.addItem(1, date, name);
+        model.addItem(1, date,time, name);
     }
 
 
     @Override
     @JavascriptInterface
-    public void deleteItem(String date, String name) {//delete task from DB
-        model.deleteFromToDoList(date, name);
+    public void deleteItem(String date,String time, String name) {//delete task from DB
+        model.deleteFromToDoList(date,time, name);
     }
 
     @Override
     @JavascriptInterface
-    public void updated(String date, String name,
-                        String updateDate, String updateName) {//call to edit task from database function
+    public void updated(String date,String time, String name,
+                        String updateDate,String updateTime ,String updateName) {//call to edit task from database function
         //TODO add filter to filter out other accounts (user_id)
-        model.updateToDoList(date, name, updateDate, updateName);
+        model.updateToDoList(date,time,name, updateDate,updateTime, updateName);
 
     }
 
